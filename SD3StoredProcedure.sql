@@ -165,24 +165,24 @@ BEGIN
 	(
 		CHECKSUM
 		(
-			TRIM(CONVERT(VARCHAR(MAX), source.[Length]))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.PmsLocationId)) +
-			TRIM(CONVERT(VARCHAR(MAX), source.PmsProviderId)) +
-			TRIM(CONVERT(VARCHAR(MAX), source.PmsResourceId))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.StartDate)) +
-			TRIM(CONVERT(VARCHAR(MAX), source.StartTime)) +
-			TRIM(CONVERT(VARCHAR(MAX), source.Deleted))
+			ISNULL(CONVERT(VARCHAR(MAX),source.[Length]),CONVERT(VARCHAR(MAX),''))	+
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsLocationId,0)) +
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsProviderId,0)) +
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsResourceId,0))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.StartDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.StartTime),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.Deleted),CONVERT(VARCHAR(MAX),''))
 		)
 		<>
 		CHECKSUM
 		(
-			TRIM(CONVERT(VARCHAR(MAX), target.[Length]))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.PmsLocationId)) +
-			TRIM(CONVERT(VARCHAR(MAX), target.PmsProviderId)) +
-			TRIM(CONVERT(VARCHAR(MAX), target.PmsResourceId))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.StartDate)) +
-			TRIM(CONVERT(VARCHAR(MAX), target.StartTime)) +
-			TRIM(CONVERT(VARCHAR(MAX), target.Deleted))
+			ISNULL(CONVERT(VARCHAR(MAX),target.[Length]),CONVERT(VARCHAR(MAX),''))	+
+			CONVERT(VARCHAR(MAX), target.PmsLocationId) +
+			CONVERT(VARCHAR(MAX), target.PmsProviderId) +
+			CONVERT(VARCHAR(MAX), target.PmsResourceId)	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.StartDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.StartTime),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.Deleted),CONVERT(VARCHAR(MAX),''))
 		)
 	)
 	THEN
@@ -269,14 +269,12 @@ BEGIN
 		(
 			CHECKSUM
 			(
-				TRIM(CONVERT(VARCHAR(MAX), source.PmsReasonId))	+ 
-				TRIM(CONVERT(VARCHAR(MAX), source.ReasonName))		
+				TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.PmsReasonId),CONVERT(VARCHAR(MAX),'')))
 			)
 			<>
 			CHECKSUM
 			(
-				TRIM(CONVERT(VARCHAR(MAX), target.PmsReasonId))	+ 
-				TRIM(CONVERT(VARCHAR(MAX), target.ReasonName))		
+				TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.PmsReasonId),CONVERT(VARCHAR(MAX),'')))	
 			)
 		)
 		THEN
@@ -307,12 +305,12 @@ BEGIN
 		(
 			CHECKSUM
 			(
-				TRIM(CONVERT(VARCHAR(MAX), source.ReasonName))		
+				TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ReasonName),CONVERT(VARCHAR(MAX),'')))
 			)
 			<>
 			CHECKSUM
 			(
-				TRIM(CONVERT(VARCHAR(MAX), target.ReasonName))		
+				TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ReasonName),CONVERT(VARCHAR(MAX),'')))
 			)
 		)
 		THEN
@@ -445,29 +443,27 @@ BEGIN
 	(  -- determine if anything changed
 		CHECKSUM
 		(
-			CONVERT(VARCHAR(MAX), source.PmsPatientId) +
-			CONVERT(VARCHAR(MAX), source.PmsLocationId)	+
-			CONVERT(VARCHAR(MAX), source.PmsProviderId) +
-			CONVERT(VARCHAR(MAX), source.PmsResourceId) +
-			CONVERT(VARCHAR(MAX), source.PmsReasonId)	+
-			CONVERT(VARCHAR(MAX), source.StartDate) +
-			CONVERT(VARCHAR(MAX), source.StartTime) +
-			CONVERT(VARCHAR(MAX), source.[Length])	+
-			TRIM(CONVERT(VARCHAR(MAX), source.ApptType)) +
-			CONVERT(VARCHAR(MAX), source.ApptStatus) +
-			CONVERT(VARCHAR(MAX), source.ShowedUp) +
-			CONVERT(VARCHAR(MAX), source.SpendAmt) +
-			TRIM(CONVERT(VARCHAR(MAX), source.ICD1)) +
-			TRIM(CONVERT(VARCHAR(MAX), source.ICD2)) +
-			TRIM(CONVERT(VARCHAR(MAX), source.ICD3)) +
-			TRIM(CONVERT(VARCHAR(MAX), source.CPT1)) +
-			TRIM(CONVERT(VARCHAR(MAX), source.CPT2)) +
-			TRIM(CONVERT(VARCHAR(MAX), source.CPT3)) +
-			CONVERT(VARCHAR(MAX), source.Deleted) ,
-			CONVERT(VARCHAR(MAX), source.PmsCreatedDate),
-			CONVERT(VARCHAR(MAX), source.PmsLastModifiedDate),
-			CONVERT(VARCHAR(MAX), source.UTCCreatedDate),
-			CONVERT(VARCHAR(MAX), source.UTCLastModifiedDate)
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsPatientId,0)) +
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsLocationId,0))	+
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsProviderId,0)) +
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsResourceId,0)) +
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsReasonId,0)) +
+			ISNULL(CONVERT(VARCHAR(MAX),source.StartDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.StartTime),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.[Length]),CONVERT(VARCHAR(MAX),''))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ApptType),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ApptStatus),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.ShowedUp),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.SpendAmt),CONVERT(VARCHAR(MAX),''))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ICD1),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ICD2),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ICD3),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.CPT1),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.CPT2),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.CPT3),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.Deleted),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.PmsCreatedDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.PmsLastModifiedDate),CONVERT(VARCHAR(MAX),''))
 		)
 		<>
 		CHECKSUM
@@ -476,25 +472,23 @@ BEGIN
 			CONVERT(VARCHAR(MAX), target.PmsLocationId)	+
 			CONVERT(VARCHAR(MAX), target.PmsProviderId) +
 			CONVERT(VARCHAR(MAX), target.PmsResourceId) +
-			CONVERT(VARCHAR(MAX), target.PmsReasonId)	+
-			CONVERT(VARCHAR(MAX), target.StartDate) +
-			CONVERT(VARCHAR(MAX), target.StartTime) +
-			CONVERT(VARCHAR(MAX), target.[Length])	+
-			TRIM(CONVERT(VARCHAR(MAX), target.ApptType)) +
-			CONVERT(VARCHAR(MAX), target.ApptStatus) +
-			CONVERT(VARCHAR(MAX), target.ShowedUp) +
-			CONVERT(VARCHAR(MAX), target.SpendAmt) +
-			TRIM(CONVERT(VARCHAR(MAX), target.ICD1)) +
-			TRIM(CONVERT(VARCHAR(MAX), target.ICD2)) +
-			TRIM(CONVERT(VARCHAR(MAX), target.ICD3)) +
-			TRIM(CONVERT(VARCHAR(MAX), target.CPT1)) +
-			TRIM(CONVERT(VARCHAR(MAX), target.CPT2)) +
-			TRIM(CONVERT(VARCHAR(MAX), target.CPT3)) +
-			CONVERT(VARCHAR(MAX), target.Deleted),
-			CONVERT(VARCHAR(MAX), target.PmsCreatedDate),
-			CONVERT(VARCHAR(MAX), target.PmsLastModifiedDate),
-			CONVERT(VARCHAR(MAX), target.UTCCreatedDate),
-			CONVERT(VARCHAR(MAX), target.UTCLastModifiedDate)
+			CONVERT(VARCHAR(MAX), target.PmsReasonId) +
+			ISNULL(CONVERT(VARCHAR(MAX),target.StartDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.StartTime),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.[Length]),CONVERT(VARCHAR(MAX),''))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ApptType),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ApptStatus),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.ShowedUp),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.SpendAmt),CONVERT(VARCHAR(MAX),''))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ICD1),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ICD2),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ICD3),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.CPT1),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.CPT2),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.CPT3),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.Deleted),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.PmsCreatedDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.PmsLastModifiedDate),CONVERT(VARCHAR(MAX),''))
 		)
 	)
 THEN    -- only update the columns that changed
@@ -996,14 +990,12 @@ BEGIN
 		(
 			CHECKSUM
 			(
-				TRIM(CONVERT(VARCHAR(MAX), source.PmsInsurerId))	+ 
-				TRIM(CONVERT(VARCHAR(MAX), source.InsurerName))		
+				TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.PmsInsurerId),CONVERT(VARCHAR(MAX),'')))
 			)
 			<>
 			CHECKSUM
 			(
-				TRIM(CONVERT(VARCHAR(MAX), target.PmsInsurerId))	+ 
-				TRIM(CONVERT(VARCHAR(MAX), target.InsurerName))		
+				TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.PmsInsurerId),CONVERT(VARCHAR(MAX),'')))
 			)
 		)
 		THEN
@@ -1034,12 +1026,12 @@ BEGIN
 		(
 			CHECKSUM
 			(
-				TRIM(CONVERT(VARCHAR(MAX), source.InsurerName))	 
+				TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.InsurerName),CONVERT(VARCHAR(MAX),'')))
 			)
 			<>
 			CHECKSUM
 			(
-				TRIM(CONVERT(VARCHAR(MAX), target.InsurerName))	
+				TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.InsurerName),CONVERT(VARCHAR(MAX),'')))
 			)
 		)
 		THEN
@@ -1085,14 +1077,14 @@ BEGIN
 	(
 		CHECKSUM
 		(
-			TRIM(CONVERT(VARCHAR(MAX), source.LocationName))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.TimeZone))
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.LocationName),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.TimeZone),CONVERT(VARCHAR(MAX),'')))
 		)
 		<>
 		CHECKSUM
 		(
-			TRIM(CONVERT(VARCHAR(MAX), target.LocationName))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.TimeZone))
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.LocationName),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.TimeZone),CONVERT(VARCHAR(MAX),'')))
 		)
 	)
 	THEN
@@ -1244,155 +1236,159 @@ BEGIN
         )
 WHEN MATCHED AND
 (  -- determine if anything changed
-	CHECKSUM
-	(
-		CONVERT(VARCHAR(MAX), source.PmsLocationId)	+
-		CONVERT(VARCHAR(MAX), source.PmsProviderId) +
-		CONVERT(VARCHAR(MAX), source.PatientNumber) +
-		CONVERT(VARCHAR(MAX), source.FirstName) +
-		CONVERT(VARCHAR(MAX), source.LastName) +
-		CONVERT(VARCHAR(MAX), source.PrimaryPhone) +
-		CONVERT(VARCHAR(MAX), source.PrimaryPhoneType) +
-		CONVERT(VARCHAR(MAX), source.SecondaryPhone) +
-		CONVERT(VARCHAR(MAX), source.SecondaryPhoneType) +
-		CONVERT(VARCHAR(MAX), source.CellPhone) +
-		CONVERT(VARCHAR(MAX), source.Email) +
-		CONVERT(VARCHAR(MAX), source.Address1) +
-		CONVERT(VARCHAR(MAX), source.Address2)  +
-		CONVERT(VARCHAR(MAX), source.City) +
-		CONVERT(VARCHAR(MAX), source.State) +
-		CONVERT(VARCHAR(MAX), source.Country)  +
-		CONVERT(VARCHAR(MAX), source.Zip) +
-		CONVERT(VARCHAR(MAX), source.DOB) +
-		CONVERT(VARCHAR(MAX), source.SSN) +
-		CONVERT(VARCHAR(MAX), source.Gender) +
-		CONVERT(VARCHAR(MAX), source.PreferredLanguage) +
-		CONVERT(VARCHAR(MAX), source.Title) +
-		CONVERT(VARCHAR(MAX), source.CommunicationChoice1) +
-		CONVERT(VARCHAR(MAX), source.CommunicationChoice2) +
-		CONVERT(VARCHAR(MAX), source.CommunicationChoice3) +
-		CONVERT(VARCHAR(MAX), source.SurveyEmailPreference) +
-		CONVERT(VARCHAR(MAX), source.SurveySMSPreference) +
-		CONVERT(VARCHAR(MAX), source.SurveyVoicePreference) +
-		CONVERT(VARCHAR(MAX), source.SurveyPostalPreference) +
-		CONVERT(VARCHAR(MAX), source.ReminderEmailPreference) +
-		CONVERT(VARCHAR(MAX), source.ReminderSMSPreference) +
-		CONVERT(VARCHAR(MAX), source.ReminderVoicePreference) +
-		CONVERT(VARCHAR(MAX), source.ReminderPostalPreference) +
-		CONVERT(VARCHAR(MAX), source.RecallEmailPreference) +
-		CONVERT(VARCHAR(MAX), source.RecallSMSPreference) +
-		CONVERT(VARCHAR(MAX), source.RecallVoicePreference) +
-		CONVERT(VARCHAR(MAX), source.RecallPostalPreference) +
-		CONVERT(VARCHAR(MAX), source.PickupEmailPreference) +
-		CONVERT(VARCHAR(MAX), source.PickupSMSPreference) +
-		CONVERT(VARCHAR(MAX), source.PickupVoicePreference) +
-		CONVERT(VARCHAR(MAX), source.PickupPostalPreference) +
-		CONVERT(VARCHAR(MAX), source.OtherEmailPreference) +
-		CONVERT(VARCHAR(MAX), source.OtherSMSPreference) +
-		CONVERT(VARCHAR(MAX), source.OtherVoicePreference) +
-		CONVERT(VARCHAR(MAX), source.OtherPostalPreference) +
-		CONVERT(VARCHAR(MAX), source.Status)  +
-		TRIM(CONVERT(VARCHAR(MAX), source.ICD1)) +
-		TRIM(CONVERT(VARCHAR(MAX), source.ICD2)) +
-		TRIM(CONVERT(VARCHAR(MAX), source.ICD3)) +
-		CONVERT(VARCHAR(MAX), source.ICD1Date) +
-		CONVERT(VARCHAR(MAX), source.ICD2Date) +
-		CONVERT(VARCHAR(MAX), source.ICD3Date) +
-		CONVERT(VARCHAR(MAX), source.InsurerIDPrimary) +
-		CONVERT(VARCHAR(MAX), source.InsurerIDSecondary) +
-		CONVERT(VARCHAR(MAX), source.InsurerIDTertiary) +
-		CONVERT(VARCHAR(MAX), source.SpendingBehavior) +
-		CONVERT(VARCHAR(MAX), source.ContactLensWearer) +
-		CONVERT(VARCHAR(MAX), source.PrimaryInsuranceEIN) +
-		CONVERT(VARCHAR(MAX), source.PrimaryInsuranceGroupId) +
-		CONVERT(VARCHAR(MAX), source.SecondaryInsuranceGroupId) +
-		CONVERT(VARCHAR(MAX), source.TertiaryInsuranceGroupId) +
-		CONVERT(VARCHAR(MAX), source.PrimaryInsurancePolicyNo) +
-		CONVERT(VARCHAR(MAX), source.SecondaryInsurancePolicyNo) +
-		CONVERT(VARCHAR(MAX), source.TertiaryInsurancePolicyNo) +
-		CONVERT(VARCHAR(MAX), source.PrimaryInsurancePlanName) +
-		CONVERT(VARCHAR(MAX), source.SecondaryInsurancePlanName) +
-		CONVERT(VARCHAR(MAX), source.TertiaryInsurancePlanName) +
-		CONVERT(VARCHAR(MAX), source.PmsSpecificName1) +
-		CONVERT(VARCHAR(MAX), source.PmsSpecificValue1) +
-		CONVERT(VARCHAR(MAX), source.LastVisitOrExamDate) +
-		CONVERT(VARCHAR(MAX), source.Deleted) 
-	)
-	<>
-	CHECKSUM
-	(
-		CONVERT(VARCHAR(MAX), target.PmsLocationId)	+
-		CONVERT(VARCHAR(MAX), target.PmsProviderId) +
-		CONVERT(VARCHAR(MAX), target.PatientNumber) +
-		CONVERT(VARCHAR(MAX), target.FirstName) +
-		CONVERT(VARCHAR(MAX), target.LastName) +
-		CONVERT(VARCHAR(MAX), target.PrimaryPhone) +
-		CONVERT(VARCHAR(MAX), target.PrimaryPhoneType) +
-		CONVERT(VARCHAR(MAX), target.SecondaryPhone) +
-		CONVERT(VARCHAR(MAX), target.SecondaryPhoneType) +
-		CONVERT(VARCHAR(MAX), target.CellPhone) +
-		CONVERT(VARCHAR(MAX), target.Email) +
-		CONVERT(VARCHAR(MAX), target.Address1) +
-		CONVERT(VARCHAR(MAX), target.Address2)  +
-		CONVERT(VARCHAR(MAX), target.City) +
-		CONVERT(VARCHAR(MAX), target.State) +
-		CONVERT(VARCHAR(MAX), target.Country)  +
-		CONVERT(VARCHAR(MAX), target.Zip) +
-		CONVERT(VARCHAR(MAX), target.DOB) +
-		CONVERT(VARCHAR(MAX), target.SSN) +
-		CONVERT(VARCHAR(MAX), target.Gender) +
-		CONVERT(VARCHAR(MAX), target.PreferredLanguage) +
-		CONVERT(VARCHAR(MAX), target.Title) +
-		CONVERT(VARCHAR(MAX), target.CommunicationChoice1) +
-		CONVERT(VARCHAR(MAX), target.CommunicationChoice2) +
-		CONVERT(VARCHAR(MAX), target.CommunicationChoice3) +
-		CONVERT(VARCHAR(MAX), target.SurveyEmailPreference) +
-		CONVERT(VARCHAR(MAX), target.SurveySMSPreference) +
-		CONVERT(VARCHAR(MAX), target.SurveyVoicePreference) +
-		CONVERT(VARCHAR(MAX), target.SurveyPostalPreference) +
-		CONVERT(VARCHAR(MAX), target.ReminderEmailPreference) +
-		CONVERT(VARCHAR(MAX), target.ReminderSMSPreference) +
-		CONVERT(VARCHAR(MAX), target.ReminderVoicePreference) +
-		CONVERT(VARCHAR(MAX), target.ReminderPostalPreference) +
-		CONVERT(VARCHAR(MAX), target.RecallEmailPreference) +
-		CONVERT(VARCHAR(MAX), target.RecallSMSPreference) +
-		CONVERT(VARCHAR(MAX), target.RecallVoicePreference) +
-		CONVERT(VARCHAR(MAX), target.RecallPostalPreference) +
-		CONVERT(VARCHAR(MAX), target.PickupEmailPreference) +
-		CONVERT(VARCHAR(MAX), target.PickupSMSPreference) +
-		CONVERT(VARCHAR(MAX), target.PickupVoicePreference) +
-		CONVERT(VARCHAR(MAX), target.PickupPostalPreference) +
-		CONVERT(VARCHAR(MAX), target.OtherEmailPreference) +
-		CONVERT(VARCHAR(MAX), target.OtherSMSPreference) +
-		CONVERT(VARCHAR(MAX), target.OtherVoicePreference) +
-		CONVERT(VARCHAR(MAX), target.OtherPostalPreference) +
-		CONVERT(VARCHAR(MAX), target.Status)  +
-		TRIM(CONVERT(VARCHAR(MAX), target.ICD1)) +
-		TRIM(CONVERT(VARCHAR(MAX), target.ICD2)) +
-		TRIM(CONVERT(VARCHAR(MAX), target.ICD3)) +
-		CONVERT(VARCHAR(MAX), target.ICD1Date) +
-		CONVERT(VARCHAR(MAX), target.ICD2Date) +
-		CONVERT(VARCHAR(MAX), target.ICD3Date) +
-		CONVERT(VARCHAR(MAX), target.InsurerIDPrimary) +
-		CONVERT(VARCHAR(MAX), target.InsurerIDSecondary) +
-		CONVERT(VARCHAR(MAX), target.InsurerIDTertiary) +
-		CONVERT(VARCHAR(MAX), target.SpendingBehavior) +
-		CONVERT(VARCHAR(MAX), target.ContactLensWearer) +
-		CONVERT(VARCHAR(MAX), target.PrimaryInsuranceEIN) +
-		CONVERT(VARCHAR(MAX), target.PrimaryInsuranceGroupId) +
-		CONVERT(VARCHAR(MAX), target.SecondaryInsuranceGroupId) +
-		CONVERT(VARCHAR(MAX), target.TertiaryInsuranceGroupId) +
-		CONVERT(VARCHAR(MAX), target.PrimaryInsurancePolicyNo) +
-		CONVERT(VARCHAR(MAX), target.SecondaryInsurancePolicyNo) +
-		CONVERT(VARCHAR(MAX), target.TertiaryInsurancePolicyNo) +
-		CONVERT(VARCHAR(MAX), target.PrimaryInsurancePlanName) +
-		CONVERT(VARCHAR(MAX), target.SecondaryInsurancePlanName) +
-		CONVERT(VARCHAR(MAX), target.TertiaryInsurancePlanName) +
-		CONVERT(VARCHAR(MAX), target.PmsSpecificName1) +
-		CONVERT(VARCHAR(MAX), target.PmsSpecificValue1) +
-		CONVERT(VARCHAR(MAX), target.LastVisitOrExamDate) +
-		CONVERT(VARCHAR(MAX), target.Deleted) 
-	)
+		CHECKSUM
+		(
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsLocationId,0))	+
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsProviderId,0)) +
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.PatientNumber),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.FirstName),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.LastName),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.PrimaryPhone),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.PrimaryPhoneType),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.SecondaryPhone),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.SecondaryPhoneType),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.CellPhone),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.Email),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.Address1),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.Address2),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.City),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.State),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.Country),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.Zip),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.DOB),CONVERT(VARCHAR(MAX),''))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.SSN),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.Gender),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.PreferredLanguage),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.Title),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.CommunicationChoice1),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.CommunicationChoice2),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.CommunicationChoice3),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.SurveyEmailPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.SurveySMSPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.SurveyVoicePreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.SurveyPostalPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.ReminderEmailPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.ReminderSMSPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.ReminderVoicePreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.ReminderPostalPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.RecallEmailPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.RecallSMSPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.RecallVoicePreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.RecallPostalPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.PickupEmailPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.PickupSMSPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.PickupVoicePreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.PickupPostalPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.OtherEmailPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.OtherSMSPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.OtherVoicePreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.OtherPostalPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.Status),CONVERT(VARCHAR(MAX),''))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ICD1),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ICD2),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ICD3),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.ICD1Date),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.ICD2Date),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.ICD3Date),CONVERT(VARCHAR(MAX),''))	+
+			CONVERT(VARCHAR(MAX), ISNULL(source.InsurerIDPrimary,0)) +
+			CONVERT(VARCHAR(MAX), ISNULL(source.InsurerIDSecondary,0)) +
+			CONVERT(VARCHAR(MAX), ISNULL(source.InsurerIDTertiary,0)) +
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.SpendingBehavior),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),(CASE WHEN target.ContactLensWearer IS NOT NULL THEN target.ContactLensWearer ELSE source.ContactLensWearer END)),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.PrimaryInsuranceEIN),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.PrimaryInsuranceGroupId),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.SecondaryInsuranceGroupId),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.TertiaryInsuranceGroupId),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.PrimaryInsurancePolicyNo),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.SecondaryInsurancePolicyNo),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.TertiaryInsurancePolicyNo),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.PrimaryInsurancePlanName),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.SecondaryInsurancePlanName),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.TertiaryInsurancePlanName),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.PmsSpecificName1),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.PmsSpecificValue1),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),(CASE WHEN source.LastVisitOrExamDate > target.LastVisitOrExamDate THEN source.LastVisitOrExamDate ELSE target.LastVisitOrExamDate END)),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.Deleted),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.PMSCreatedDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.PMSLastModifiedDate),CONVERT(VARCHAR(MAX),''))
+		)
+		<>
+		CHECKSUM
+		(
+			CONVERT(VARCHAR(MAX), target.PmsLocationId)	+
+			CONVERT(VARCHAR(MAX), target.PmsProviderId) +
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.PatientNumber),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.FirstName),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.LastName),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.PrimaryPhone),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.PrimaryPhoneType),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.SecondaryPhone),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.SecondaryPhoneType),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.CellPhone),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.Email),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.Address1),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.Address2),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.City),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.State),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.Country),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.Zip),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.DOB),CONVERT(VARCHAR(MAX),''))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.SSN),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.Gender),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.PreferredLanguage),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.Title),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.CommunicationChoice1),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.CommunicationChoice2),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.CommunicationChoice3),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.SurveyEmailPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.SurveySMSPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.SurveyVoicePreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.SurveyPostalPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.ReminderEmailPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.ReminderSMSPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.ReminderVoicePreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.ReminderPostalPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.RecallEmailPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.RecallSMSPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.RecallVoicePreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.RecallPostalPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.PickupEmailPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.PickupSMSPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.PickupVoicePreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.PickupPostalPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.OtherEmailPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.OtherSMSPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.OtherVoicePreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.OtherPostalPreference),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.Status),CONVERT(VARCHAR(MAX),''))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ICD1),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ICD2),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ICD3),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.ICD1Date),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.ICD2Date),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.ICD3Date),CONVERT(VARCHAR(MAX),''))	+
+			CONVERT(VARCHAR(MAX), target.InsurerIDPrimary) +
+			CONVERT(VARCHAR(MAX), target.InsurerIDSecondary) +
+			CONVERT(VARCHAR(MAX), target.InsurerIDTertiary) +
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.SpendingBehavior),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ContactLensWearer),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.PrimaryInsuranceEIN),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.PrimaryInsuranceGroupId),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.SecondaryInsuranceGroupId),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.TertiaryInsuranceGroupId),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.PrimaryInsurancePolicyNo),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.SecondaryInsurancePolicyNo),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.TertiaryInsurancePolicyNo),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.PrimaryInsurancePlanName),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.SecondaryInsurancePlanName),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.TertiaryInsurancePlanName),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.PmsSpecificName1),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.PmsSpecificValue1),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.LastVisitOrExamDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.Deleted),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.PMSCreatedDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.PMSLastModifiedDate),CONVERT(VARCHAR(MAX),''))
+		)
 )
 THEN	-- only update the columns that changed
 	UPDATE SET 
@@ -1524,7 +1520,14 @@ THEN	-- only update the columns that changed
 		target.SpendingBehavior			= CASE WHEN CHECKSUM(CONVERT(VARCHAR(MAX), TRIM(source.SpendingBehavior)))	  <> CHECKSUM(CONVERT(VARCHAR(MAX), TRIM(target.SpendingBehavior)))
 			THEN Trim(source.SpendingBehavior)		ELSE Trim(target.SpendingBehavior) END,
 		target.ContactLensWearer		= CASE WHEN CHECKSUM(CONVERT(VARCHAR(MAX), TRIM(source.ContactLensWearer)))	  <> CHECKSUM(CONVERT(VARCHAR(MAX), TRIM(target.ContactLensWearer)))
-			THEN Trim(source.ContactLensWearer)		ELSE Trim(target.ContactLensWearer) END,
+			THEN 
+				(CASE WHEN target.ContactLensWearer IS NOT NULL 
+				THEN 
+					Trim(target.ContactLensWearer) 
+				ELSE Trim(source.ContactLensWearer) 
+				END)
+			ELSE Trim(target.ContactLensWearer) 
+			END,
 		target.PrimaryInsuranceEIN		= CASE WHEN CHECKSUM(CONVERT(VARCHAR(MAX), TRIM(source.PrimaryInsuranceEIN))) <> CHECKSUM(CONVERT(VARCHAR(MAX), TRIM(target.PrimaryInsuranceEIN)))
 			THEN Trim(source.PrimaryInsuranceEIN)	ELSE Trim(target.PrimaryInsuranceEIN) END,
 
@@ -1553,7 +1556,13 @@ THEN	-- only update the columns that changed
 		target.PmsSpecificValue1 = CASE WHEN CHECKSUM(CONVERT(VARCHAR(MAX), TRIM(source.PmsSpecificValue1))) <> CHECKSUM(CONVERT(VARCHAR(MAX), TRIM(target.PmsSpecificValue1)))
 			THEN TRIM(source.PmsSpecificValue1) ELSE TRIM(target.PmsSpecificValue1) END,			
 		target.LastVisitOrExamDate			= CASE WHEN CHECKSUM(source.LastVisitOrExamDate)		<> CHECKSUM(target.LastVisitOrExamDate)			
-			THEN source.LastVisitOrExamDate			ELSE target.LastVisitOrExamDate END,
+			THEN source.LastVisitOrExamDate	
+				(CASE WHEN source.LastVisitOrExamDate > target.LastVisitOrExamDate 
+				THEN source.LastVisitOrExamDate 
+				ELSE target.LastVisitOrExamDate 
+				END)
+			ELSE target.LastVisitOrExamDate 
+			END,
         
 		target.Deleted						= CASE WHEN CHECKSUM(source.Deleted)					<> CHECKSUM(target.Deleted)						
 			THEN source.Deleted ELSE target.Deleted END,
@@ -2260,45 +2269,48 @@ BEGIN
 	(
 		CHECKSUM
 		(
-			--TRIM(CONVERT(VARCHAR(MAX), source.PmsInstanceId))		+
-			TRIM(CONVERT(VARCHAR(MAX), source.PmsOrderId))			+
-			TRIM(CONVERT(VARCHAR(MAX), source.PmsPatientId))		+	
-			TRIM(CONVERT(VARCHAR(MAX), source.PmsLocationId))		+
-			TRIM(CONVERT(VARCHAR(MAX), source.PmsProviderId))		+
-			TRIM(CONVERT(VARCHAR(MAX), source.OrderDate))			+
-			TRIM(CONVERT(VARCHAR(MAX), source.ReceivedDate))		+
-			TRIM(CONVERT(VARCHAR(MAX), source.NotifiedDate))		+
-			TRIM(CONVERT(VARCHAR(MAX), source.PickedUpDate))		+	
-			TRIM(CONVERT(VARCHAR(MAX), source.ProductType))			+
-			TRIM(CONVERT(VARCHAR(MAX), source.ProductBrand1))		+
-			TRIM(CONVERT(VARCHAR(MAX), source.ProductBrand2))		+
-			TRIM(CONVERT(VARCHAR(MAX), source.ProductBrand3))		+
-			TRIM(CONVERT(VARCHAR(MAX), source.SpendAmt))			+
-			TRIM(CONVERT(VARCHAR(MAX), source.OrderStatus))			+
-			TRIM(CONVERT(VARCHAR(MAX), source.PricedDate))			+
-			TRIM(CONVERT(VARCHAR(MAX), source.StatusChangedDate))	+	
-			TRIM(CONVERT(VARCHAR(MAX), source.Deleted))			
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.PmsOrderId),CONVERT(VARCHAR(MAX),'')))	+
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsPatientId,0))		+	
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsLocationId,0))		+
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsProviderId,0))		+
+			ISNULL(CONVERT(VARCHAR(MAX),source.OrderDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.ReceivedDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.NotifiedDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.PickedUpDate),CONVERT(VARCHAR(MAX),''))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ProductType),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ProductBrand1),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ProductBrand2),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ProductBrand3),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.SpendAmt),CONVERT(VARCHAR(MAX),''))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.OrderStatus),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.PricedDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.StatusChangedDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.Deleted),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.PMSCreatedDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.PMSLastModifiedDate),CONVERT(VARCHAR(MAX),''))
 		)
 		<>
 		CHECKSUM
 		(
-			TRIM(CONVERT(VARCHAR(MAX), target.PmsOrderId))			+
-			TRIM(CONVERT(VARCHAR(MAX), target.PmsPatientId))		+	
-			TRIM(CONVERT(VARCHAR(MAX), target.PmsLocationId))		+
-			TRIM(CONVERT(VARCHAR(MAX), target.PmsProviderId))		+
-			TRIM(CONVERT(VARCHAR(MAX), target.OrderDate))			+
-			TRIM(CONVERT(VARCHAR(MAX), target.ReceivedDate))		+
-			TRIM(CONVERT(VARCHAR(MAX), target.NotifiedDate))		+
-			TRIM(CONVERT(VARCHAR(MAX), target.PickedUpDate))		+	
-			TRIM(CONVERT(VARCHAR(MAX), target.ProductType))			+
-			TRIM(CONVERT(VARCHAR(MAX), target.ProductBrand1))		+
-			TRIM(CONVERT(VARCHAR(MAX), target.ProductBrand2))		+
-			TRIM(CONVERT(VARCHAR(MAX), target.ProductBrand3))		+
-			TRIM(CONVERT(VARCHAR(MAX), target.SpendAmt))			+
-			TRIM(CONVERT(VARCHAR(MAX), target.OrderStatus))			+
-			TRIM(CONVERT(VARCHAR(MAX), target.PricedDate))			+
-			TRIM(CONVERT(VARCHAR(MAX), target.StatusChangedDate))	+	
-			TRIM(CONVERT(VARCHAR(MAX), target.Deleted))			
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.PmsOrderId),CONVERT(VARCHAR(MAX),'')))	+
+			CONVERT(VARCHAR(MAX), target.PmsPatientId)		+	
+			CONVERT(VARCHAR(MAX), target.PmsLocationId)		+
+			CONVERT(VARCHAR(MAX), target.PmsProviderId)		+
+			ISNULL(CONVERT(VARCHAR(MAX),target.OrderDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.ReceivedDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.NotifiedDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.PickedUpDate),CONVERT(VARCHAR(MAX),''))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ProductType),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ProductBrand1),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ProductBrand2),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ProductBrand3),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.SpendAmt),CONVERT(VARCHAR(MAX),''))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.OrderStatus),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.PricedDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.StatusChangedDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.Deleted),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.PMSCreatedDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.PMSLastModifiedDate),CONVERT(VARCHAR(MAX),''))
 		)
 	)
 	THEN
@@ -2364,14 +2376,14 @@ BEGIN
 	(
 		CHECKSUM
 		(
-			TRIM(CONVERT(VARCHAR(MAX), source.ProviderFirstName))	+ 
-			TRIM(CONVERT(VARCHAR(MAX), source.ProviderLastName))
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ProviderFirstName),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ProviderLastName),CONVERT(VARCHAR(MAX),'')))
 		)
 		<>
 		CHECKSUM
 		(
-			TRIM(CONVERT(VARCHAR(MAX), target.ProviderFirstName))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.ProviderLastName))
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ProviderFirstName),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ProviderLastName),CONVERT(VARCHAR(MAX),'')))
 		)
 	)
 	THEN
@@ -2450,14 +2462,12 @@ BEGIN
 		(
 			CHECKSUM
 			(
-				TRIM(CONVERT(VARCHAR(MAX), source.PmsRecallReasonId))	+ 
-				TRIM(CONVERT(VARCHAR(MAX), source.ReasonName))		
+				TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.PmsRecallReasonId),CONVERT(VARCHAR(MAX),'')))
 			)
 			<>
 			CHECKSUM
 			(
-				TRIM(CONVERT(VARCHAR(MAX), target.PmsRecallReasonId))	+ 
-				TRIM(CONVERT(VARCHAR(MAX), target.ReasonName))		
+				TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.PmsRecallReasonId),CONVERT(VARCHAR(MAX),'')))
 			)
 		)
 		THEN
@@ -2488,12 +2498,12 @@ BEGIN
 		(
 			CHECKSUM
 			(
-				TRIM(CONVERT(VARCHAR(MAX), source.ReasonName))		
+				TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ReasonName),CONVERT(VARCHAR(MAX),'')))
 			)
 			<>
 			CHECKSUM
 			(
-				TRIM(CONVERT(VARCHAR(MAX), target.ReasonName))		
+				TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ReasonName),CONVERT(VARCHAR(MAX),'')))
 			)
 		)
 		THEN
@@ -2580,22 +2590,22 @@ BEGIN
 	(
 		CHECKSUM
 		(
-			TRIM(CONVERT(VARCHAR(MAX), source.PmsPatientId))		+	
-			TRIM(CONVERT(VARCHAR(MAX), source.PmsLocationId))		+
-			TRIM(CONVERT(VARCHAR(MAX), source.PmsProviderId))		+
-			TRIM(CONVERT(VARCHAR(MAX), source.RecallDate))			+
-			TRIM(CONVERT(VARCHAR(MAX), source.RecallReasonId))		+
-			TRIM(CONVERT(VARCHAR(MAX), source.Deleted))			
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsPatientId,0))		+	
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsLocationId,0))		+
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsProviderId,0))		+
+			ISNULL(CONVERT(VARCHAR(MAX),source.RecallDate),CONVERT(VARCHAR(MAX),''))	+
+			CONVERT(VARCHAR(MAX), ISNULL(source.RecallReasonId,0))		+
+			ISNULL(CONVERT(VARCHAR(MAX),source.Deleted),CONVERT(VARCHAR(MAX),''))
 		)
 		<>
 		CHECKSUM
 		(
-			TRIM(CONVERT(VARCHAR(MAX), target.PmsPatientId))		+	
-			TRIM(CONVERT(VARCHAR(MAX), target.PmsLocationId))		+
-			TRIM(CONVERT(VARCHAR(MAX), target.PmsProviderId))		+
-			TRIM(CONVERT(VARCHAR(MAX), target.RecallDate))			+
-			TRIM(CONVERT(VARCHAR(MAX), target.RecallReasonId))		+
-			TRIM(CONVERT(VARCHAR(MAX), target.Deleted))			
+			CONVERT(VARCHAR(MAX), target.PmsPatientId)		+	
+			CONVERT(VARCHAR(MAX), target.PmsLocationId)		+
+			CONVERT(VARCHAR(MAX), target.PmsProviderId)		+
+			ISNULL(CONVERT(VARCHAR(MAX),target.RecallDate),CONVERT(VARCHAR(MAX),''))	+
+			CONVERT(VARCHAR(MAX), target.RecallReasonId)		+
+			ISNULL(CONVERT(VARCHAR(MAX),target.Deleted),CONVERT(VARCHAR(MAX),''))
 		)
 	)
 	THEN
@@ -2647,12 +2657,12 @@ BEGIN
 	(
 		CHECKSUM
 		(
-			TRIM(CONVERT(VARCHAR(MAX), source.ResourceName))
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ResourceName),CONVERT(VARCHAR(MAX),'')))
 		)
 		<>
 		CHECKSUM
 		(
-			TRIM(CONVERT(VARCHAR(MAX), target.ResourceName))	
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ResourceName),CONVERT(VARCHAR(MAX),'')))
 		)
 	)
 	THEN
@@ -2860,50 +2870,54 @@ BEGIN
 	(
 		CHECKSUM
 		(
-			TRIM(CONVERT(VARCHAR(MAX), source.PmsLocationId))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.PmsProviderId))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.PmsPatientId))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.PmsAppointmentId))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.VisitDate))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.VisitType))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.VisitReason))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.ShowedUp))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.ICD1))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.ICD2))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.ICD3))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.CPT1))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.CPT2))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.CPT3))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.ProductType))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.ProductBrand1))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.ProductBrand2))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.ProductBrand3))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.SpendAmt))	+
-			TRIM(CONVERT(VARCHAR(MAX), source.Deleted))
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsLocationId,0))	+
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsProviderId,0))	+
+			CONVERT(VARCHAR(MAX), ISNULL(source.PmsPatientId,0))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.PmsAppointmentId),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),(CASE WHEN source.VisitDate > target.VisitDate THEN source.VisitDate ELSE target.VisitDate END)),CONVERT(VARCHAR(MAX),''))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.VisitType),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.VisitReason),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.ShowedUp),CONVERT(VARCHAR(MAX),''))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ICD1),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ICD2),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ICD3),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.CPT1),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.CPT2),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.CPT3),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ProductType),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ProductBrand1),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ProductBrand2),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),source.ProductBrand3),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.SpendAmt),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.Deleted),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.PMSCreatedDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),source.PMSLastModifiedDate),CONVERT(VARCHAR(MAX),''))
 		)
 		<>
 		CHECKSUM
 		(
-			TRIM(CONVERT(VARCHAR(MAX), target.PmsLocationId))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.PmsProviderId))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.PmsPatientId))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.PmsAppointmentId))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.VisitDate))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.VisitType))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.VisitReason))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.ShowedUp))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.ICD1))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.ICD2))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.ICD3))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.CPT1))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.CPT2))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.CPT3))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.ProductType))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.ProductBrand1))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.ProductBrand2))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.ProductBrand3))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.SpendAmt))	+
-			TRIM(CONVERT(VARCHAR(MAX), target.Deleted))
+			CONVERT(VARCHAR(MAX), target.PmsLocationId)	+
+			CONVERT(VARCHAR(MAX), target.PmsProviderId)	+
+			CONVERT(VARCHAR(MAX), target.PmsPatientId)	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.PmsAppointmentId),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.VisitDate),CONVERT(VARCHAR(MAX),''))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.VisitType),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.VisitReason),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.ShowedUp),CONVERT(VARCHAR(MAX),''))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ICD1),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ICD2),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ICD3),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.CPT1),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.CPT2),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.CPT3),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ProductType),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ProductBrand1),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ProductBrand2),CONVERT(VARCHAR(MAX),'')))	+
+			TRIM(ISNULL(CONVERT(VARCHAR(MAX),target.ProductBrand3),CONVERT(VARCHAR(MAX),'')))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.SpendAmt),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.Deleted),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.PMSCreatedDate),CONVERT(VARCHAR(MAX),''))	+
+			ISNULL(CONVERT(VARCHAR(MAX),target.PMSLastModifiedDate),CONVERT(VARCHAR(MAX),''))
 		)
 	)
 	THEN
